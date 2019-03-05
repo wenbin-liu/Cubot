@@ -23,9 +23,14 @@ public:
     std::string L(int deg);
     std::string R(int deg);
 
+    std::string solve(char *facelets);
+    static void printMat(cv::Mat const &mat);
+
 private:
     cv::Vec<float,3> calTurning(cv::Vec<float,3> &src);
     string axs2Char(cv::Vec<float,3> &rotAxs,int deg);
+    std::string convertKociembaStr(char *str);
+
     
 };
 

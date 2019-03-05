@@ -1,5 +1,6 @@
 #include <cube.hpp>
 #include <iostream>
+#include "search.h"
 
  const cv::Vec<float,3> Cube::X(1,0,0);
  const cv::Vec<float,3> Cube::Y(0,1,0);
@@ -81,7 +82,8 @@ cv::Vec<float,3> Cube::calTurning(cv::Vec<float,3> &src)
 }
  string Cube::U(int deg)
 {
-    cv::Vec<float,3>src = {0,0,1};
+    cv::Vec<float,3>src;
+    rotMat.col(2).copyTo(src);
     cv::Vec<float,3> rotAxs = calTurning( src );
     return axs2Char(rotAxs,deg);
      
@@ -89,35 +91,45 @@ cv::Vec<float,3> Cube::calTurning(cv::Vec<float,3> &src)
 
  string Cube::D(int deg)
 {
-    cv::Vec<float,3>src = {0,0,-1};
+    cv::Vec<float,3>src ;
+    rotMat.col(2).copyTo(src);
+    src = -src;
     cv::Vec<float,3> rotAxs = calTurning( src );
     return axs2Char(rotAxs,deg);
      
 }
  string Cube::L(int deg)
 {
-    cv::Vec<float,3>src = {0,-1,0};
+    cv::Vec<float,3>src  ;
+    rotMat.col(1).copyTo(src);
+    src = -src;
     cv::Vec<float,3> rotAxs = calTurning( src );
     return axs2Char(rotAxs,deg);
      
 }
  string Cube::R(int deg)
 {
-    cv::Vec<float,3>src = {0,1,0};
+    cv::Vec<float,3>src  ;
+    rotMat.col(1).copyTo(src);
+    src = src;
     cv::Vec<float,3> rotAxs = calTurning( src );
     return axs2Char(rotAxs,deg);
      
 }
  string Cube::F(int deg)
 {
-    cv::Vec<float,3>src = {1,0,0};
+    cv::Vec<float,3>src  ;
+    rotMat.col(0).copyTo(src);
+    src = src;
     cv::Vec<float,3> rotAxs = calTurning( src );
     return axs2Char(rotAxs,deg);
      
 }
  string Cube::B(int deg)
 {
-    cv::Vec<float,3>src = {-1,0,0};
+    cv::Vec<float,3>src  ;
+    rotMat.col(0).copyTo(src);
+    src = -src;
     cv::Vec<float,3> rotAxs = calTurning( src );
     return axs2Char(rotAxs,deg);
 }
@@ -210,4 +222,105 @@ string Cube::axs2Char(cv::Vec<float,3> &rotAxs,int deg)
     }
     return cmdStr;
     
+}
+
+std::string Cube::convertKociembaStr(char *str)
+{
+    std::string cmdStr;
+    for(int i=0;str[i]!='\0';i++)
+    {
+        if(str[i] == 'U')
+        {
+            if(str[i+1]==' ')
+                cmdStr += U(1);
+            else if(str[i+1] == '\'')
+                cmdStr += U(-1);
+            else if(str[i+1] == '2')
+                cmdStr += U(2);     
+        }
+        else if(str[i] == 'D')
+        {
+            if(str[i+1]==' ')
+                cmdStr += D(1);
+            else if(str[i+1] == '\'')
+                cmdStr += D(-1);
+            else if(str[i+1] == '2')
+                cmdStr += D(2);     
+        }
+
+        else if(str[i] == 'R')
+        {
+            if(str[i+1]==' ')
+                cmdStr += R(1);
+            else if(str[i+1] == '\'')
+                cmdStr += R(-1);
+            else if(str[i+1] == '2')
+                cmdStr += R(2);     
+        }
+
+        else if(str[i] == 'L')
+        {
+            if(str[i+1]==' ')
+                cmdStr += L(1);
+            else if(str[i+1] == '\'')
+                cmdStr += L(-1);
+            else if(str[i+1] == '2')
+                cmdStr += L(2);     
+        }
+
+        else if(str[i] == 'F')
+        {
+            if(str[i+1]==' ')
+                cmdStr += F(1);
+            else if(str[i+1] == '\'')
+                cmdStr += F(-1);
+            else if(str[i+1] == '2')
+                cmdStr += F(2);     
+        }
+
+        else if(str[i] == 'B')
+        {
+            if(str[i+1]==' ')
+                cmdStr += B(1);
+            else if(str[i+1] == '\'')
+                cmdStr += B(-1);
+            else if(str[i+1] == '2')
+                cmdStr += B(2);     
+        }
+        printMat(rotMat);
+        cout<<endl;
+    }
+    return cmdStr;
+}
+
+std::string Cube::solve(char *facelets)
+{
+     std::string cmdStr;
+        char *sol = solution(
+            facelets,
+            24,
+            1000,
+            0,
+            "cache"
+        );
+       
+        if(sol == NULL)
+        return cmdStr;
+        else if(sol[0]=='E')
+        return std::string(sol);
+    cout<<sol<<endl;
+    cmdStr = convertKociembaStr(sol);
+    free(sol);
+    return cmdStr;
+}
+void Cube::printMat(cv::Mat const &mat)
+{
+    for(int i=0;i<3;i++)
+    {
+        for(int j=0;j<3;j++)
+        {
+            cout<<mat.at<float>(i,j);
+        }
+        cout<<endl;
+    }
 }

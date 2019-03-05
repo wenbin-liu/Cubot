@@ -14,10 +14,12 @@ SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
 include_directories(
  inc
  /usr/local/include
+ kociemba_genLib/include
  ${OpenCV_INCLUDE_DIRS}
 )
 
 
+add_subdirectory(kociemba_genLib)
 
 set(testSrcList
     src/main.cpp
@@ -30,5 +32,5 @@ set(testSrcList
 add_executable(main ${testSrcList})
 
 
-target_link_libraries(main ${OpenCV_LIBS} )
+target_link_libraries(main kociemba ${OpenCV_LIBS})
 
