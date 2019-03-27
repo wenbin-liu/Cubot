@@ -21,9 +21,18 @@
 #include <unistd.h>
 #include "uart.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 int serialInit(char *portPath,int nSpeed)
 {
     int fd = open(portPath,O_RDWR|O_NOCTTY|O_NDELAY);
+    if(fd < 0)
+    {
+        printf("Serial port can't be open !\n");
+    }
     set_serial(fd,nSpeed,8,'N',1);
     return fd;
 }
@@ -117,3 +126,7 @@ int set_serial(int fd,int nSpeed,int nBits,char nEvent,int nStop)
 
     return 0;
 }
+
+#ifdef __cplusplus
+}
+#endif

@@ -24,6 +24,8 @@ add_subdirectory(kociemba_genLib)
 set(testSrcList
     src/main.cpp
     src/cube.cpp
+    src/uart.c
+    src/attemp_noturn.cpp
     )
 
 
@@ -32,5 +34,5 @@ set(testSrcList
 add_executable(main ${testSrcList})
 
 
-target_link_libraries(main kociemba ${OpenCV_LIBS})
+target_link_libraries(main kociemba pthread ${OpenCV_LIBS})
 
