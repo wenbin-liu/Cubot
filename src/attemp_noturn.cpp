@@ -26,8 +26,8 @@ const vector<bool> _keep{
 
 //up camera perspective quad points ---  up, right, back
 const vector<vector<Point2f>> quadPtSrc{
-    vector<Point2f>{Point2f(236, 160), Point2f(496, 165), Point2f(461, 350), Point2f(245, 350)},
-    vector<Point2f>{Point2f(260, 32), Point2f(464, 43), Point2f(496, 165), Point2f(236, 160)},
+    vector<Point2f>{Point2f(218, 233), Point2f(475, 231), Point2f(446, 407), Point2f(233, 407)},
+    vector<Point2f>{Point2f(239, 97), Point2f(445, 101), Point2f(475, 231), Point2f(218, 233)},
     
     
 };
@@ -255,15 +255,15 @@ void readFaceColor(Mat Img, char colorLetter[],int face_num,Mat &perImg)
                 colorLetter[i] = colorName[maxIdx];
             }
         }
-       // imshow("orignal", Img);
-       // imshow("perspective", perImg);
+        imshow("orignal", Img);
+        imshow("perspective", perImg);
         cout << colorLetter << endl;
         //waitKey(0);
         
 
     
-   // displayColor(colorLetter, 1);
-   // waitKey(0);
+    displayColor(colorLetter, 1);
+    waitKey(0);
 }
 
 void getPic_rec(char clr[])

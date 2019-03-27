@@ -21,18 +21,27 @@ include_directories(
 
 add_subdirectory(kociemba_genLib)
 
-set(testSrcList
+set(mainSrcList
     src/main.cpp
     src/cube.cpp
     src/uart.c
     src/attemp_noturn.cpp
+    src/control.cpp
+    )
+
+set(solveTestSrcList
+    src/solveTest.cpp
+    src/cube.cpp
     )
 
 
 
 
-add_executable(main ${testSrcList})
+add_executable(main ${mainSrcList})
+
+add_executable(solveTest ${solveTestSrcList})
 
 
 target_link_libraries(main kociemba pthread ${OpenCV_LIBS})
+target_link_libraries(solveTest kociemba pthread ${OpenCV_LIBS})
 
