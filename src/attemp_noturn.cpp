@@ -26,9 +26,9 @@ const vector<bool> _keep{
 
 //up camera perspective quad points ---  up, right, back
 const vector<vector<Point2f>> quadPtSrc{
-    vector<Point2f>{Point2f(218, 233), Point2f(475, 231), Point2f(446, 407), Point2f(233, 407)},
-    vector<Point2f>{Point2f(239, 97), Point2f(445, 101), Point2f(475, 231), Point2f(218, 233)},
-    
+  
+    vector<Point2f>{Point2f(335, 82), Point2f(345, 238), Point2f(245, 229), Point2f(235, 86)},
+      vector<Point2f>{Point2f(442, 75), Point2f(451, 217), Point2f(345, 238), Point2f(335, 82)},
     
 };
 

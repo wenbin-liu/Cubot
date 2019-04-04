@@ -34,14 +34,25 @@ set(solveTestSrcList
     src/cube.cpp
     )
 
+set(cmdSrcList
+    src/cmd.cpp
+    src/cube.cpp
+    src/uart.c
+    src/attemp_noturn.cpp
+    src/control.cpp
+    )
 
 
 
 add_executable(main ${mainSrcList})
 
 add_executable(solveTest ${solveTestSrcList})
+add_executable(cmd ${cmdSrcList})
+
 
 
 target_link_libraries(main kociemba pthread ${OpenCV_LIBS})
 target_link_libraries(solveTest kociemba pthread ${OpenCV_LIBS})
+target_link_libraries(cmd kociemba pthread ${OpenCV_LIBS})
+
 

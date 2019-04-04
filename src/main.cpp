@@ -18,7 +18,8 @@ cv::VideoCapture cam(1);
 int main(int argc, char **argv)
 {
 
-    // catchPicThre();
+   // catchPicThre();
+
     int serialFd = serialInit("/dev/rfcomm0", 115200);
     if (serialFd < 0)
     {
@@ -28,7 +29,39 @@ int main(int argc, char **argv)
     {
         exit(1);
     }
+   cv:: Mat Img;
+     for(int i=0;i<10;i++)
+    cam>>Img;
 
+    
+  //  cv::VideoCapture cam(1);
+   char clr[60]={"\0"};
+     while(1)
+    {
+        char choice='c';
+        cout<<"train:t  continue:c  onlytest:o\n";
+        cin>>choice;
+        if(choice=='t')
+            trainModel(cam);
+        else if(choice=='o')
+               { 
+                   getPic_rec(clr);
+                    return 0;
+               }
+        else if(choice=='c')
+           break;
+
+        else break;
+        
+    }
+
+    pthread_t id;
+
+    pthread_create(&id,NULL,(catchPicThre),NULL);
+    cameraReadCmd(serialFd);
+    pthread_join(id,NULL);
+
+    getPic_rec(clr);
     char buffer[128] = "SOLVE ";
 
     Cube cube;
@@ -96,41 +129,9 @@ int main(int argc, char **argv)
     }
     else
     {
-
-    cv::Mat Img;
-    for (int i = 0; i < 10; i++)
-        cam >> Img;
-
-    //  cv::VideoCapture cam(1);
-    char clr[60] = {"\0"};
-    while (1)
-    {
-        char choice = 'c';
-        cout << "train:t  continue:c  onlytest:o\n";
-        cin >> choice;
-        if (choice == 't')
-            trainModel(cam);
-        else if (choice == 'o')
-        {
-            getPic_rec(clr);
-            return 0;
-        }
-        else
-            break;
-    }
-
-    pthread_t id;
-
-    pthread_create(&id, NULL, (catchPicThre), NULL);
-    cameraReadCmd(serialFd);
-    pthread_join(id, NULL);
-
-    getPic_rec(clr);
-
-
         orderRearrange(clr);
 
-        cout << clr << endl;
+        cout<<clr<<endl;
 
         string sol = cube.solve(clr);
         if (sol == "")
@@ -140,7 +141,7 @@ int main(int argc, char **argv)
         }
         cout << sol << endl;
         const char *solCstr = sol.c_str();
-        //Y轴方向反了  临时解决办法
+                //Y轴方向反了  临时解决办法
         char solCstrAdj[128]={'0'};
         int j = 0;
         for(const char *ptr = solCstr;*ptr!='\0';ptr++)
@@ -174,7 +175,7 @@ int main(int argc, char **argv)
         }
 
         //
-        strcpy(buffer + 6, solCstr);
+        strcpy(buffer + 6, solCstrAdj);
 
         buffer[5] = strlen(buffer) - 6;
         write(serialFd, buffer, buffer[5] + 6);
@@ -183,6 +184,16 @@ int main(int argc, char **argv)
 
         return 0;
     }
+
+    // Cube cube;
+    // cout<<cube.U(1)<<endl;
+    // printMat(cube.rotMat);
+    // cout<<cube.L(1)<<endl;
+    // printMat(cube.rotMat);
+    // cout<<cube.B(1)<<endl;
+    // printMat(cube.rotMat);
+
+
 
 
     return 0;

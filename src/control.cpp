@@ -58,10 +58,14 @@ void * catchPicThre(void *args)
 
         cv::cvtColor(picNow, picNowGray, cv::COLOR_BGR2GRAY);
 
-        cv::absdiff(picNowGray, picLastGray, picDiff);
+        cv::absdiff(picNowGray(cv::Range(86,229),cv::Range(235,442)),
+                 picLastGray(cv::Range(86,229),cv::Range(235,442)),
+                  picDiff);
         cv::threshold(picDiff, binPic, 30, 255, cv::THRESH_BINARY);
         // cv::findContours(binPic,contourList,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_NONE);
         int point_sum=bSums(binPic);
+        cv::imshow("Cube",picNowGray(cv::Range(86,229),cv::Range(235,442)));
+        cv::waitKey(1);
         if(point_sum<=40&&ismoved==1)
         {   
            
