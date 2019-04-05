@@ -4,6 +4,7 @@
 #include <sstream>
 #include <unistd.h>
 
+#define FACE_CHANGE_INTERVAL 800000
 
 extern cv::VideoCapture cam;
 using namespace std;
@@ -58,13 +59,13 @@ void * catchPicThre(void *args)
 
         cv::cvtColor(picNow, picNowGray, cv::COLOR_BGR2GRAY);
 
-        cv::absdiff(picNowGray(cv::Range(86,229),cv::Range(235,442)),
-                 picLastGray(cv::Range(86,229),cv::Range(235,442)),
+        cv::absdiff(picNowGray(cv::Range(90,229),cv::Range(245,442)),
+                 picLastGray(cv::Range(90,229),cv::Range(245,442)),
                   picDiff);
         cv::threshold(picDiff, binPic, 30, 255, cv::THRESH_BINARY);
         // cv::findContours(binPic,contourList,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_NONE);
         int point_sum=bSums(binPic);
-        cv::imshow("Cube",picNowGray(cv::Range(86,229),cv::Range(235,442)));
+        cv::imshow("Cube",picNowGray(cv::Range(90,229),cv::Range(245,442)));
         cv::waitKey(1);
         if(point_sum<=40&&ismoved==1)
         {   
@@ -99,7 +100,7 @@ void cameraReadCmd(int fd)
     int i = 0;
     char buffer[10] = "START";
     //FIRST IMAGE
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
     // cam >> image[i++] ;
     // cv::imshow("Picture",image[i-1]);
     // cv::waitKey(40);
@@ -107,7 +108,7 @@ void cameraReadCmd(int fd)
 
     strcpy(buffer + 5, "RXL"); //Right X Loose
     write(fd, buffer, 8);
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
     // cam >> image[i++] ;
     // cout<<"Picture "<<i-1<<endl;
 
@@ -117,7 +118,7 @@ void cameraReadCmd(int fd)
     // SECOND IMAGE
     //Right X Loose
     write(fd, buffer, 8);
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
     // cam >> image[i++] ;
     //cout<<"Picture "<<i-1<<endl;
 
@@ -126,7 +127,7 @@ void cameraReadCmd(int fd)
 
     //Right X Loose
     write(fd, buffer, 8);
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
     //cam >> image[i++] ;
     //cout<<"Picture "<<i-1<<endl;
 
@@ -135,15 +136,15 @@ void cameraReadCmd(int fd)
 
     // //Right X Loose
     write(fd, buffer, 8);
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
 
     strcpy(buffer + 5, "XYT"); //Right X Loose
     write(fd, buffer, 8);
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
 
     strcpy(buffer + 5, "RYL"); //Right X Loose
     write(fd, buffer, 8);
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
     // cam >> image[i++] ;
     // cout<<"Picture "<<i-1<<endl;
 
@@ -153,7 +154,7 @@ void cameraReadCmd(int fd)
     //SECOND IMAGE
     //Right X Loose
     write(fd, buffer, 8);
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
     // cam >> image[i++] ;
     // cout<<"Picture "<<i-1<<endl;
 
@@ -162,7 +163,7 @@ void cameraReadCmd(int fd)
 
     // //Right X Loose
     write(fd, buffer, 8);
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
     // cam >> image[i++] ;
     // cout<<"Picture "<<i-1<<endl;
 
@@ -171,12 +172,12 @@ void cameraReadCmd(int fd)
 
     // //Right X Loose
     write(fd, buffer, 8);
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
 
 
     strcpy(buffer + 5, "XYT"); //Right X Loose
     write(fd, buffer, 8);
-    usleep(1000000*2);
+    usleep(FACE_CHANGE_INTERVAL);
 }
 int testSerial(int serialFd)
 {

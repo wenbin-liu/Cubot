@@ -39,15 +39,15 @@ int main(int argc, char **argv)
      while(1)
     {
         char choice='c';
-        cout<<"train:t  continue:c  onlytest:o\n";
+        cout<<"train:t  continue:c  onlytest:o \n";
         cin>>choice;
         if(choice=='t')
             trainModel(cam);
         else if(choice=='o')
-               { 
-                   getPic_rec(clr);
-                    return 0;
-               }
+            { 
+                getPic_rec(clr);
+                return 0;
+            }
         else if(choice=='c')
            break;
 
@@ -142,40 +142,46 @@ int main(int argc, char **argv)
         cout << sol << endl;
         const char *solCstr = sol.c_str();
                 //Y轴方向反了  临时解决办法
-        char solCstrAdj[128]={'0'};
-        int j = 0;
-        for(const char *ptr = solCstr;*ptr!='\0';ptr++)
-        {
-            if(*ptr == 'y' && *(ptr+1) == '\'')
-                {
-                    solCstrAdj[j++] = 'y';
-                    ptr++;
-                }
-            else if(*ptr == 'y')
-                {
-                    solCstrAdj[j++] = 'y';
-                    solCstrAdj[j++] = '\'';
-                }
-            else if(*ptr == 'Y' && *(ptr+1) == '\'')
-            {
-                solCstrAdj[j++] = 'Y';
-                ptr++;
-            }
-            else if(*ptr == 'Y')
-                {
-                    solCstrAdj[j++] = 'Y';
-                    solCstrAdj[j++] = '\'';
-                }
-            else
-            {
-                solCstrAdj[j++]=*ptr;
-            }
+        // char solCstrAdj[128]={'0'};
+        // int j = 0;
+        // for(const char *ptr = solCstr;*ptr!='\0';ptr++)
+        // {
+        //     if(*ptr == 'y' && *(ptr+1) == '\'')
+        //         {
+        //             solCstrAdj[j++] = 'y';
+        //             ptr++;
+        //         }
+        //     else if(*ptr == 'y' && *(ptr+1) != 'y')
+        //         {
+        //             solCstrAdj[j++] = 'y';
+        //             solCstrAdj[j++] = '\'';
+        //         }
+        //     else if(*ptr == 'Y' && *(ptr+1) == '\'')
+        //     {
+        //         solCstrAdj[j++] = 'Y';
+        //         ptr++;
+        //     }
+        //     else if(*ptr == 'Y'&& *(ptr+1) != 'Y')
+        //         {
+        //             solCstrAdj[j++] = 'Y';
+        //             solCstrAdj[j++] = '\'';
+        //         }
+        //     else
+        //     {
+        //         if((*ptr == 'Y'&& *(ptr+1) == 'Y')||(*ptr == 'y'&& *(ptr+1) == 'y'))
+        //         {
+        //             solCstrAdj[j++] = *(ptr++);
+        //             solCstrAdj[j++] = *(ptr);
+        //         }
+        //         else
+        //             solCstrAdj[j++]=*ptr;
+        //     }
             
 
-        }
+        // }
 
         //
-        strcpy(buffer + 6, solCstrAdj);
+        strcpy(buffer + 6, solCstr);
 
         buffer[5] = strlen(buffer) - 6;
         write(serialFd, buffer, buffer[5] + 6);
