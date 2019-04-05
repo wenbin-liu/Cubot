@@ -14,7 +14,7 @@
 
 using namespace std;
 
-cv::VideoCapture cam(1);
+cv::VideoCapture cam(0);
 int main(int argc, char **argv)
 {
 
